@@ -266,5 +266,10 @@ namespace PokemonGBAFramework.Pokemon
         public override long IdTipo => ID;
 
 
+        public int CalculaHp(int nivel, int evs = 0, int ivs = 0)
+        {
+            return (((ivs + 2 * Hp + (evs / 4) + 100) * nivel) / 100) + 10;
+        }
+
     }
 }
