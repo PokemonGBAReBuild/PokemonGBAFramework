@@ -1,4 +1,5 @@
 ﻿using Gabriel.Cat.S.Binaris;
+using Gabriel.Cat.S.Extension;
 using PokemonGBAFramework.Mapa.Sprites;
 using System;
 using System.Collections.Generic;
@@ -66,23 +67,24 @@ namespace PokemonGBAFramework.Eventos
 
         #endregion
 
-        //public static Script GetScript(Edicion edicion, PokemonErrante pokemonErrante)
-        //{
-        //    Hex nivelYEstado;
-        //    string estado, nivel;
-        //    ushort auxNivelYEstado;
-        //    Script scriptPokemonErrante = new Script();
-        //    scriptPokemonErrante.ComandosScript.Add(new ComandosScript.Special(new Word((ushort)Variable.GetVariable(VariableSpecialPokemonErrante, edicion))));
-        //    scriptPokemonErrante.ComandosScript.Add(new ComandosScript.SetVar(new Word((ushort)Variable.GetVariable(VariablePokemonErranteVar, edicion)), pokemonErrante.OrdenNacional));
-        //    scriptPokemonErrante.ComandosScript.Add(new ComandosScript.SetVar(new Word((ushort)Variable.GetVariable(VariableVitalidadVar, edicion)), pokemonErrante.Vida));
-        //    estado = ((Hex)pokemonErrante.Stats).ToString().PadLeft(2, '0');
-        //    nivel = ((Hex)((byte)pokemonErrante.Nivel)).ToString();
-        //    nivelYEstado = (Hex)(estado + nivel);
-        //    auxNivelYEstado = (ushort)(uint)nivelYEstado;
-        //    scriptPokemonErrante.ComandosScript.Add(new ComandosScript.SetVar(new Word((ushort)Variable.GetVariable(VariableNivelYEstadoVar, edicion)), new Word(auxNivelYEstado)));//por mirar
-        //    return scriptPokemonErrante;
+        public byte GetStats()
+        {
+            const int BITSBYTE = 8;
+
+            bool[] bitsStat = new bool[BITSBYTE];
+            bool[] noDor = { Envenenado, Quemado, Congelado, Paralizado, EnvenenadoGrave };
+            bool[] bitsAPoner = ((byte)TurnosDormido).ToBits();
+
+            for (int i = 0, f = 3; i < f; i++)
+                bitsStat[i] = bitsAPoner[5 + i];
+
+            for (int i=0;i<noDor.Length;i++)
+              bitsStat[3 + i] = noDor[i];
 
 
-        //}
+            return bitsStat.ToByte();
+        }
+
+    
     }
 }
